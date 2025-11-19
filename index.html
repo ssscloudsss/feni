@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>feni</title>
+
+    <style>
+        * { box-sizing: border-box; }
+        html, body { height: 100%; margin: 0; padding: 0; }
+        body {
+            background: #ffe6ef;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* =====================================================
+                🌟 MARCO COMPLETO PERSONALIZADO
+           ===================================================== */
+        .marco-full {
+            pointer-events: none;
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+        }
+
+        /* 4 bordes brillantes con corazones */
+        .marco-full::before,
+        .marco-full::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border: 14px solid transparent;
+            border-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'>\
+<defs>\
+<linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='0%'>\
+<stop offset='0%' stop-color='#ff77b7'/>\
+<stop offset='100%' stop-color='#ffbde6'/>\
+</linearGradient>\
+</defs>\
+<rect x='0' y='0' width='300' height='300' fill='none' stroke='url(#g)' stroke-width='14'/>\
+<text x='20' y='40' font-size='40' fill='white'>🤍</text>\
+<text x='240' y='40' font-size='40' fill='#ff4da6'>❤️</text>\
+<text x='20' y='280' font-size='40' fill='#ff77ff'>💗</text>\
+<text x='240' y='280' font-size='40' fill='#ff4da6'>💖</text>\
+</svg>") 30 round;
+            filter: drop-shadow(0 0 10px #ff8fc9);
+            animation: brilloMarco 3s ease-in-out infinite alternate;
+        }
+
+        /* Gatitos */
+        .gatito {
+            position: absolute;
+            font-size: 50px;
+            z-index: 1000;
+            pointer-events: none;
+            animation: saltitos 2.5s infinite ease-in-out;
+            opacity: 0.95;
+        }
+        .gatito:nth-child(1) { top: 10px; left: 10px; }
+        .gatito:nth-child(2) { bottom: 10px; right: 10px; }
+
+        @keyframes brilloMarco {
+            0% { filter: drop-shadow(0 0 6px #ff8fc9); }
+            100% { filter: drop-shadow(0 0 20px #ff4da6); }
+        }
+
+        @keyframes saltitos {
+            0%,100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        /* ======================= TÍTULO ANIMADO ======================= */
+        #bienvenida {
+            font-size: 40px;
+            font-weight: bold;
+            color: #ff4da6;
+            margin: 30px 10px 10px 10px;
+            animation:
+                pop 0.8s ease-out,
+                brillo 3s ease-in-out infinite alternate,
+                vaiven 3s ease-in-out infinite;
+            display: inline-block;
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0); opacity: 0; }
+            60% { transform: scale(1.15); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        @keyframes brillo {
+            0% { text-shadow: 0 0 5px #ff99cc; }
+            100% { text-shadow: 0 0 20px #ff1a8c; }
+        }
+        @keyframes vaiven {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* ======================= CORAZONES ======================= */
+        .corazon {
+            position: fixed;
+            bottom: -20px;
+            font-size: 22px;
+            color: #ff4da6;
+            animation: subir linear infinite;
+            opacity: 0.85;
+            pointer-events: none;
+            z-index: 50;
+        }
+        @keyframes subir {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* ======================= GALERÍA ======================= */
+        .contenedor {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            justify-items: center;
+            align-items: center;
+            max-width: 980px;
+            margin: 30px auto 80px auto;
+            padding: 0 10px;
+            z-index: 5;
+            position: relative;
+        }
+
+        .foto {
+            width: 200px;
+            height: 150px;
+            object-fit: cover;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: transform 0.18s, box-shadow 0.18s;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .foto:hover {
+            transform: scale(1.06);
+            box-shadow: 0 8px 22px rgba(255,77,106,0.22);
+        }
+
+        .video-centro video {
+            width: 420px;
+            border-radius: 12px;
+        }
+
+        /* ======================= LIGHTBOX ======================= */
+        #lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        #lightbox.contenedor-activo { display: flex; }
+
+        #lightbox img, #lightbox video {
+            max-width: 95%;
+            max-height: 90%;
+            border-radius: 12px;
+        }
+        .cerrar {
+            position: fixed;
+            top: 18px;
+            right: 20px;
+            font-size: 26px;
+            color: #fff;
+            cursor: pointer;
+            z-index: 1010;
+        }
+
+        /* ======================= SECCIÓN CARTA ======================= */
+        .carta-section {
+            margin-top: 120px;
+            padding-bottom: 80px;
+        }
+
+        .btn-carta {
+            background: #ff4da6;
+            color: white;
+            padding: 15px 25px;
+            font-size: 22px;
+            cursor: pointer;
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+            transition: transform 0.2s;
+        }
+        .btn-carta:hover {
+            transform: scale(1.05);
+        }
+
+        #cartaModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 1200;
+            padding: 20px;
+        }
+        #cartaModal.abierto { display: flex; }
+
+        .carta-contenido {
+            width: 90%;
+            max-width: 650px;
+            background: #fff5fc;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            animation: abrirCarta 0.7s ease-out;
+            text-align: left;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        @keyframes abrirCarta {
+            0% { transform: scale(0.5) rotateX(60deg); opacity: 0; }
+            100% { transform: scale(1) rotateX(0); opacity: 1; }
+        }
+
+        .cerrar-carta {
+            font-size: 26px;
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            cursor: pointer;
+            color: white;
+        }
+
+        /* ======================= NUEVO BOTÓN ABAJO ======================= */
+        .extra-boton {
+            margin-top: 70px;
+            margin-bottom: 90px;
+        }
+        .extra-boton a {
+            display: inline-block;
+            background: #ff4da6;
+            padding: 15px 28px;
+            font-size: 22px;
+            color: white;
+            border-radius: 12px;
+            text-decoration: none;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+            transition: transform 0.2s;
+        }
+        .extra-boton a:hover {
+            transform: scale(1.06);
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- 🎀 MARCO COMPLETO -->
+    <div class="marco-full"></div>
+
+    <!-- 🐱 Solo 2 Gatitos -->
+    <div class="gatito">🐱</div>
+    <div class="gatito">🐱</div>
+
+    <div id="bienvenida">Bienvenida feñi （づ￣3￣）づ╭❤️～</div>
+
+    <audio id="musica" loop>
+        <source src="cancion.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- ======================= GALERÍA ======================= -->
+    <div class="contenedor">
+        <img src="foto1.jpg" class="foto" onclick="abrirImagen('foto1.jpg')">
+        <img src="foto2.jpg" class="foto" onclick="abrirImagen('foto2.jpg')">
+        <img src="foto3.jpg" class="foto" onclick="abrirImagen('foto3.jpg')">
+        <img src="foto4.jpg" class="foto" onclick="abrirImagen('foto4.jpg')">
+
+        <div class="video-centro">
+            <video controls>
+                <source src="video.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <img src="foto5.jpg" class="foto" onclick="abrirImagen('foto5.jpg')">
+        <img src="foto6.jpg" class="foto" onclick="abrirImagen('foto6.jpg')">
+        <img src="foto7.jpg" class="foto" onclick="abrirImagen('foto7.jpg')">
+        <img src="foto8.jpg" class="foto" onclick="abrirImagen('foto8.jpg')">
+    </div>
+
+    <!-- ======================= SECCIÓN CARTA ======================= -->
+    <div class="carta-section">
+        <h2 style="color:#ff4da6;">leeme 💌</h2>
+        <button class="btn-carta" onclick="abrirCarta()">(^._.^)ﾉclick(❁´◡`❁)</button>
+    </div>
+
+    <!-- Modal Carta -->
+    <div id="cartaModal" onclick="cerrarCarta(event)">
+        <div class="cerrar-carta" onclick="cerrarCarta(event)">✕</div>
+        <div class="carta-contenido" onclick="event.stopPropagation()">
+
+            <h2 style="text-align:center; color:#ff4da6;">Para mi feñi</h2>
+
+            <p>
+                q(≧▽≦q) Cumplimos otro mes mas en esta hermosa relación (❤️ ω ❤️) y no hace 
+                falta llegar a otro año para permitirme obsequiarte algo lo cual me nace desde el fondo de mi corazon, 
+                un obsequio en el cual quisiera regalarte parte de mi.
+             <p>   
+                tengo muchas emociones buenas las cuales son para ti.
+            </p>
+            no soy muy bueno haciendo manualidades por eso decidi darte esta carta de la unica forma que se
+            hacerlo bien, todo lo que ves y escuchas es hecho por mi con todo mi amor, cariño y afecto para ti
+
+            <p>
+                mas que mi novia también eres una persona con la cual tengo un vinculo demasiado especial.
+                Todo lo que tengo y siento quiero compartirlo contigo. 
+                Eres alguien importante para mi, por si un dia te preguntas que tan importante lo eres 
+                que no te quepa duda que lo que tuvimos y tenemos a dia de hoy es real.
+                Nunca se me ha dado muy bien redactar, ya sabes,
+                pero desde el fondo de mi y plasmado en este regalo que quise darte,
+                te quiero decir; （づ￣3￣）づ╭❤️～ Te Amo (^._.^)ﾉ
+            </p>
+            (mas abajo te dejo esta cancion, es para ti, tu cancion, nuestra.)
+ 
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightbox" onclick="cerrarLightbox(event)"></div>
+
+    <!-- ======================= BOTÓN EXTRA ABAJO ======================= -->
+    <div class="extra-boton">
+        <a href="https://drive.google.com/file/d/1wEubdwPquuooxE3DqcLS-lE6N8NZafkP/view?usp=drive_link"> regalo 💟</a>
+    </div>
+    <!-- ================================================================ -->
+
+
+<script>
+    /* =================== CORAZONES FLOTANDO =================== */
+    function crearCorazon() {
+        const c = document.createElement('div');
+        c.className = 'corazon';
+
+        // Colores: morado, rosa, rojo y blanco
+        const colores = ["💜", "💗", "❤️", "🤍"];
+        c.innerText = colores[Math.floor(Math.random() * colores.length)];
+
+        c.style.left = (5 + Math.random() * 90) + 'vw';
+        const dur = 4 + Math.random() * 4;
+        c.style.animationDuration = dur + 's';
+        c.style.fontSize = (18 + Math.random() * 28) + 'px';
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), dur * 1000);
+    }
+    setInterval(crearCorazon, 600);
+
+    /* =================== LIGHTBOX =================== */
+    const lightbox = document.getElementById('lightbox');
+
+    function abrirImagen(src) {
+        lightbox.innerHTML = '<div class="cerrar" onclick="cerrarLightbox(event)">✕</div>';
+        const img = document.createElement('img');
+        img.src = src;
+        img.onclick = e => e.stopPropagation();
+        lightbox.appendChild(img);
+        lightbox.classList.add('contenedor-activo');
+    }
+
+    function cerrarLightbox(e) {
+        if (!e || e.target.id === 'lightbox' || e.target.classList.contains('cerrar')) {
+            lightbox.classList.remove('contenedor-activo');
+            lightbox.innerHTML = '';
+        }
+    }
+
+    /* =================== MODAL CARTA =================== */
+    const cartaModal = document.getElementById('cartaModal');
+
+    function abrirCarta() {
+        cartaModal.classList.add('abierto');
+    }
+
+    function cerrarCarta(e) {
+        if (!e || e.target.id === 'cartaModal' || e.target.classList.contains('cerrar-carta')) {
+            cartaModal.classList.remove('abierto');
+        }
+    }
+
+    /* =================== ACTIVAR AUDIO =================== */
+    document.body.addEventListener("click", function activarAudio() {
+        const audio = document.getElementById("musica");
+        audio.play().catch(() => {});
+        document.body.removeEventListener("click", activarAudio);
+    });
+</script>
+
+</body>
+</html>
