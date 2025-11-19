@@ -74,7 +74,8 @@
 
         /* ======================= TÍTULO ANIMADO ======================= */
         #bienvenida {
-            font-size: 40px;
+            font-size: 45px;
+            font-family: "Georgia", "Times New Roman", serif;
             font-weight: bold;
             color: #ff4da6;
             margin: 30px 10px 10px 10px;
@@ -183,12 +184,14 @@
         /* ======================= SECCIÓN CARTA ======================= */
         .carta-section {
             margin-top: 120px;
+            font-family: "Georgia", "Times New Roman", serif;
             padding-bottom: 80px;
         }
 
         .btn-carta {
             background: #ff4da6;
             color: white;
+            font-family: "Georgia", "Times New Roman", serif;
             padding: 15px 25px;
             font-size: 22px;
             cursor: pointer;
@@ -203,6 +206,7 @@
 
         #cartaModal {
             display: none;
+            font-family: "Georgia", "Times New Roman", serif;
             position: fixed;
             inset: 0;
             background: rgba(0,0,0,0.85);
@@ -222,7 +226,7 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.6);
             animation: abrirCarta 0.7s ease-out;
             text-align: left;
-            font-size: 18px;
+            font-size: 19px;
             line-height: 1.6;
             color: #444;
         }
@@ -248,6 +252,7 @@
         }
         .extra-boton a {
             display: inline-block;
+            font-family: "Georgia", "Times New Roman", serif;
             background: #ff4da6;
             padding: 15px 28px;
             font-size: 22px;
@@ -260,6 +265,24 @@
         .extra-boton a:hover {
             transform: scale(1.06);
         }
+ /* ======================= texto dedicacion ======================= */
+        .parrafo-poetico {
+    margin-top: -90px;   
+    font-family: "Georgia", "Times New Roman", serif;
+    font-size: 25px;
+    color: #d9438b;
+    line-height: 1.6;
+    text-shadow: 0 0 6px rgba(255, 130, 180, 0.25);
+    padding: 10px 20px;
+    animation: suavidad 3s ease-in-out infinite alternate;
+}
+
+
+@keyframes suavidad {
+    0% { opacity: 0.75; transform: translateY(0); }
+    100% { opacity: 1; transform: translateY(-3px); }
+}
+
 
     </style>
 </head>
@@ -338,7 +361,7 @@
 
     <!-- ======================= BOTÓN EXTRA ABAJO ======================= -->
     <div class="extra-boton">
-        <a href="https://drive.google.com/file/d/1wEubdwPquuooxE3DqcLS-lE6N8NZafkP/view?usp=drive_link"> regalo 💟</a>
+        <a href="https://drive.google.com/file/d/1wEubdwPquuooxE3DqcLS-lE6N8NZafkP/view?usp=drive_link">💟 Regalo 💟</a>
     </div>
     <!-- ================================================================ -->
 
@@ -401,6 +424,15 @@
         document.body.removeEventListener("click", activarAudio);
     });
 </script>
+
+<!-- Párrafo Poético -->
+<div class="parrafo-poetico">
+    Dedicado a la persona con la cual<br>
+    compartiría miles de momentos más,<br>
+    porque tú eres increíble y que<br>
+    nadie te haga pensar lo contrario.
+</div>
+
 
 </body>
 </html>
